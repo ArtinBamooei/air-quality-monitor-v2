@@ -1,0 +1,28 @@
+services:
+  collector:
+    build: .
+    command: ["python", "-m", "src.collector"]
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      AIR_QUALITY_DB: /data/air_quality_v2.db
+    volumes:
+      - air_quality_data:/data
+    restart: "no"
+  dashboard:
+    build: .
+    command: ["streamlit", "run", "dashboard/app.py", "--server.address=0.0.0.0", "--server.port=8501"]
+    environment:
+      AIR_QUALITY_DB: /data/air_quality_v2.db
+    volumes:
+      - air_quality_data:/data
+    ports:
+      - "127.0.0.1:8501:8501"
+    depends_on:
+      collector:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+volumes:
+  air_quality_data:

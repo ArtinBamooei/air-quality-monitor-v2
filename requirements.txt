@@ -1,0 +1,6 @@
+# Install with Python 3.12 or later (also declared and enforced in pyproject.toml).
+requests==2.32.3
+pandas==2.2.3
+streamlit==1.57.0
+plotly==7.1.0
+python-dotenv==1.0.0
